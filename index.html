@@ -1,38 +1,738 @@
 <!doctype html>
 <html>
-	<head>
-		<meta charset="utf-8">
-		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+  <title>reveal.js</title>
 
-		<link rel="stylesheet" href="css/reveal.css">
-		<link rel="stylesheet" href="css/theme/black.css">
+  <link rel="stylesheet" href="css/reveal.css">
+  <link rel="stylesheet" href="css/theme/black.css">
 
-		<!-- Theme used for syntax highlighting of code -->
-		<link rel="stylesheet" href="lib/css/zenburn.css">
+  <!-- Theme used for syntax highlighting of code -->
+  <link rel="stylesheet" href="lib/css/zenburn.css">
 
-		<!-- Printing and PDF exports -->
-		<script>
+  <!-- Printing and PDF exports -->
+  <script>
 			var link = document.createElement( 'link' );
 			link.rel = 'stylesheet';
 			link.type = 'text/css';
 			link.href = window.location.search.match( /print-pdf/gi ) ? 'css/print/pdf.css' : 'css/print/paper.css';
 			document.getElementsByTagName( 'head' )[0].appendChild( link );
-		</script>
-	</head>
-	<body>
-		<div class="reveal">
-			<div class="slides">
-				<section>Slide 1</section>
-				<section>Slide 2</section>
-			</div>
-		</div>
 
-		<script src="lib/js/head.min.js"></script>
-		<script src="js/reveal.js"></script>
 
-		<script>
+
+
+  </script>
+</head>
+<body>
+<div class="reveal">
+  <div class="slides">
+    <section>
+      <h1>Functional<br>Programming</h1>
+      <h4>Introduction</h4>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Agenda
+
+        * Clojure syntax
+        * Functional recursion
+        * Structural recursion
+        * List processing
+        * Higher-order functions
+
+        Editor:
+        https://codepad.remoteinterview.io
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Introduction to Clojure syntax
+      </script>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Expressions
+
+          * What is an expression?
+
+          <p class="fragment">Something that can be evaluated and yield a result.</p>
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Expressions
+
+          ```clj
+          (+ 1 2 3)         ; 1 + 2 + 3        ; => 6
+          (println "Hello") ; println("Hello)  ; => nil
+          (>= 10 5)         ; 5 >= 10          ; => true
+          (if (>= 10 5) "Yes" "No") ; => "Yes"
+          ```
+          ``` clj
+          (http/get "http://localhost:8080")
+          (cf/create-stack :stack-name "skynet-1")
+          ```
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          #### Not everything is an expression
+
+          ```java
+          class Bird implements Flying {
+            public void takeOff() {
+              System.out.println("I fly!");
+            }
+          }
+          ```
+
+          ```java
+          if (a == 1)
+            b = 2;
+          else
+            b = 3;
+          ```
+
+          ```
+          try {
+            int a = 1 / 0;
+          } catch (Exception e) {
+            log.info("Everything is fine");
+          }
+          ```
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Side effects
+
+          Some expressions have side effects:
+
+          ```clj
+          ;; Create a definition that can be used later
+          (def pi 3.14159265358)
+          ;; The world is not the same, now it knows `pi`
+
+          ;; Use the definition
+          (2 * pi * 100)
+          ```
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Source code files
+
+          When the source code file is loaded, expressions from it are evaluated top to bottom, one by one.
+        </script>
+      </section>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+        ## Data types
+
+          * Primitives
+          * Aggregates
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ## Primitives
+
+          <table>
+            <thead>
+            <tr>
+              <th>Type</th>
+              <th>Example</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Numbers</td>
+              <td>`42`, `2.718`</td>
+            </tr>
+            <tr>
+              <td>Strings</td>
+              <td>`"Hello"`</td>
+            </tr>
+            <tr>
+              <td>Booleans</td>
+              <td>`true`, `false`</td>
+            </tr>
+            <tr>
+              <td>Keywords</td>
+              <td>`:hello`</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ## Aggregates
+
+          <table>
+            <thead>
+            <tr>
+              <th>Type</th>
+              <th>Example</th>
+              <th>Comment</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+              <td>Lists</td>
+              <td>`(1 2 3)`</td>
+              <td>O(N) access by element number</td>
+            </tr>
+            <tr>
+              <td>Vectors</td>
+              <td>`[1 2 3]`</td>
+              <td>O(1) access by element number</td>
+            </tr>
+            <tr>
+              <td>Maps</td>
+              <td>`{:foo "42" :bar 11}`</td>
+              <td>Good old hashmap</td>
+            </tr>
+            <tr>
+              <td>Sets</td>
+              <td>`#{:spades :hearts :clubs :diamonds}`</td>
+              <td>Membership</td>
+            </tr>
+            </tbody>
+          </table>
+
+        </script>
+      </section>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Functions
+
+          * What is a function?
+
+          <p class="fragment">A relation between intput and output.</p>
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Function call
+
+          ```clj
+          (check-user-access db "kwilcke" "/employees" "application.write")
+          ```
+
+          Parentheses:
+
+          <pre><code data-trim data-noescape>
+          <mark>(</mark>check-user-access db "kwilcke" "/employees" "application.write"<mark>)</mark>
+          </code></pre>
+
+          Function name:
+
+          <pre><code data-trim data-noescape>
+          (<mark>check-user-access</mark> db "kwilcke" "/employees" "application.write")
+          </code></pre>
+
+          Function args:
+
+          <pre><code data-trim data-noescape>
+          (check-user-access <mark>db</mark> <mark>"kwilcke"</mark> <mark>"/employees"</mark> <mark>"application.write"</mark>)
+          </code></pre>
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Function definition
+
+          Function with name 'double-sum' and arguments 'a' and 'b':
+
+          ```clj
+          (defn double-sum [a b]
+            (println "Arguments:" a b)
+            (* 2 (+ a b)))
+          ```
+        </script>
+      </section>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ## Functional programming
+
+          * Immutable data (no variables, only constants!)
+          * First-class functions
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          Yes, there are no variables, only constants.
+
+          How do we implement iteration like this?
+
+          ```java
+          int res = 0;
+          while (n > 0) {
+            res = res * n;
+            n = n - 1;
+          }
+          ```
+        </script>
+      </section>
+      </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Recursion
+      </script>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Recursion
+
+          * What is recursion?
+
+          <p class="fragment">A self-referential definition</p>
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Factorial
+
+          `n! = n * (n-1) * (n-2) * ... * 1`
+
+          ```clj
+          (defn factorial [n]
+            (if (<= n 1)
+              1
+              (*' n (factorial (- n 1)))))
+          ```
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Recursion principles
+
+          * Check if it's time to stop
+          * If not, call yourself again with modified parameters
+
+          ```clj
+          (defn factorial [n]
+            (if (<= n 1)
+              1
+              (*' n (factorial (- n 1)))))
+          ```
+
+        </script>
+      </section>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Tail recursion
+
+          Try this out:
+
+          ```clj
+          (factorial 10000)
+          ```
+
+          What's the answer?
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Stack
+
+          * When a function is called, internally its parameters are put into memory
+          * That memory is called **Stack**
+
+          <img data-src="images/Stack.png"/>
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Stack overflow
+
+          * Stack is not infinite, it can be filled up:
+
+          <img data-src="images/StackOverflow.png"/>
+
+          * How to avoid this?
+        </script>
+      </section>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Tail Recursion
+
+          * We can cheat
+
+          <pre><code data-trim data-noescape>
+          (defn factorial [n]
+            (if (<= n 1)
+              1
+              (*' <mark>n</mark> (factorial (- n 1)))))
+          </code></pre>
+
+          We only need those parameters if we do something with the result of the recursive call.
+          What if we return avoid it, and instead return the result directly?
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          * We can build the result gradually in another argument
+
+          <pre><code data-trim data-noescape>
+          (defn factorial-tail [n acc]
+            (if (<= n 1)
+              acc
+              (factorial-tail (- n 1) (*' n acc))))
+          </code></pre>
+
+          <img data-src="images/StackTail.png"/>
+
+          * This is Tail Recursion, when the recursive call is the last instruction in the function body.
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          * We only need to give the compiler a hint:
+
+          <pre><code data-trim data-noescape>
+          (defn factorial-tail [n acc]
+            (if (<= n 1)
+              acc
+              (<mark>recur</mark> (- n 1) (*' n acc))))
+          </code></pre>
+
+          * `recur` in place of the function name will make the compiler use the same stack frame for recursive function calls.
+          * This is Tail Call Optimization
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          #### Quiz
+
+          This is Tail Recursion:
+
+          <pre><code data-trim data-noescape>
+          (defn factorial-1 [n acc]
+            (if (<= n 1)
+              acc
+              (factorial-1 (- n 1) (*' n acc))))
+          </code></pre>
+
+          Is this Tail Recursion?
+
+          <pre><code data-trim data-noescape>
+          (defn factorial-2 [n acc]
+            (if (> n 1)
+              (factorial-2 (- n 1) (*' n acc))
+              acc))
+          </code></pre>
+
+        </script>
+      </section>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ### Another example
+
+        Greatest Common Divisor (aka Euclidean algorithm)
+
+        ```
+        GCD(X, Y)
+
+        1. If Y is 0, then the result is X
+        2. Otherwise, the result is GCD with X'= Y
+           and Y'= remainder of division X by Y
+
+        For example, GCD(33, 18) == 3
+        ```
+
+        <img data-src="images/GCD.png" style="background: white"/>
+
+        * Is this algorithm tail-recursive?
+
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Structural recursion
+
+        * Can you define something that has itself as a part?
+      </script>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Lists
+
+          List is a data structure.
+
+          * List consists of a Head and a Tail
+          * Head is just a value, like `42` or `"Hello"`
+          * Tail is another List, can be nil
+
+          <img data-src="images/List.png" style="background: white"/>
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          <img data-src="images/List.png" style="background: white"/>
+
+          What does it have to do with recursion?
+
+          <ul class="fragment">
+            <li>It contains itself</li>
+            <li>It knows where to stop</li>
+          </ul>
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Creating lists
+
+          ```clj
+          ;; cons is used to create a list:
+          (cons 42 (cons "Hello" (cons "World" nil)))
+
+          ;; Or just
+          (list 42 "Hello" "World")
+
+          ;; Or even shorter
+          '(42 "Hello" "World")
+          ```
+
+          **'** in the before the list prevents Clojure from calling `42` as a function, which would make no sense.
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Operations on lists
+
+          ```clj
+          ;; getting a Head
+          (first '(42 "Hello" "World")) ; => 42
+
+          ;; getting a Tail
+          (next '(42 "Hello" "World")) ; => '("Hello" "World")
+
+          (next '("World")) ; => ?
+
+          ;; Checking if a list is empty
+          (empty? nil) ; => true
+          (empty? '()) ; => true
+          (empty? '(42)) ; => false
+          ```
+
+        </script>
+      </section>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### List processing
+
+          * Use recursion
+          * Use `first` and `next`
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Adding up a list
+
+          * Here is non-tail-recursive version:
+
+          ```clj
+          (defn sum-list [lst]
+            (if (empty? lst)
+              0
+              (+ (first lst) (sum-list (next lst)))))
+          ```
+
+          * Exercise: implement this in a tail-recursive way.
+
+          <pre><code data-trim data-noescape class="fragment">
+          (defn sum-list-tailrec [lst acc]
+            (if (empty? lst)
+              acc
+              (recur (next lst) (+ acc (first lst)))))
+          </code></pre>
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Multiplying a list
+
+          ```clj
+          (defn multiply-list-tailrec [lst acc]
+            (if (empty? lst)
+              acc
+              (recur (next lst) (* acc (first lst)))))
+          ```
+
+          * Differs from adding in just one symbol:
+
+          <pre><code data-trim data-noescape>
+          (defn sum-list-tailrec [lst acc]
+            (if (empty? lst)
+              acc
+              (recur (next lst) (<mark>+</mark> acc (first lst)))))
+          </code></pre>
+
+        </script>
+      </section>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Higher-order functions
+
+        * Functions that take other functions as arguments
+
+        ```clj
+        (+ 1 2)  ; => 3
+        (inc 10) ; => 11
+        (odd? 5) ; => true
+        ```
+
+        <pre><code data-trim data-noescape>
+        (reduce <mark>+</mark> 10 '(1 2 3 4))
+        (map <mark>inc</mark> '(1 2 3 4))
+        (filter? <mark>odd?</mark> '(1 2 3 4))
+        </code></pre>
+
+      </script>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Reducing a list to one value
+
+          <img data-src="images/Folding.png" style="background: white"/>
+
+          * In some languages it is called "folding"
+
+        </script>
+      </section>
+
+      <section data-markdown>
+        <script type="text/template">
+          * Reducing is done with `reduce` function.
+
+          ```clj
+          ;; Args: operation, initial accumulator value, a list
+          (reduce + 0 '(1 2 3 4))
+          (reduce * 1 '(1 2 3 4))
+          (reduce (fn [acc x] (println acc x)) 1 '(1 2 3 4))
+          ```
+        </script>
+      </section>
+    </section>
+    <section>
+      <section data-markdown>
+        <script type="text/template">
+          ### Mapping a function over a list
+
+          <img data-src="images/Mapping.png" style="background: white"/>
+
+          * Creates a list of the same size, containing results of applying the function to each element.
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          * Mapping is done with `map` function
+
+          ```clj
+          ;; `inc` adds 1 to the argument
+          (map inc '(1 2 3 4)) ; => (2 3 4 5)
+          ;; The result is the same as
+          (list (inc 1) (inc 2) (inc 3) (inc 4))
+          ```
+        </script>
+      </section>
+
+    </section>
+        <section data-markdown>
+        <script type="text/template">
+          * Exercise:
+
+          ```
+          Given a list like:
+          ((1 2 3) (4 5 6) (7 8 9))
+          calculate a list containing sums of sublists:
+          (6 15 24)
+          ```
+
+          * Use `map` and `reduce`
+
+        </script>
+      </section>
+      <section data-markdown>
+        <script type="text/template">
+          * Exercise:
+
+          Write a function that reverses a list.
+
+          * Use tail-recursive approach with an accumulator.
+          * Is it more like `map` or `reduce`?
+
+        </script>
+      </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Wrap-up
+
+        * Functional programming has no variables (data is immutable).
+        * You have to use recursion.
+        * Tail recursion is important to avoid blowing the stack.
+        * Lists are defined recursively, as head and a list.
+        * Functions are first-class citizens, they can be given to other functions as arguments.
+        * IRL, everyone uses `map`, `reduce`, `filter` and other high-order functions to process lists.
+
+      </script>
+    </section>
+    <section data-markdown>
+      <script type="text/template">
+        ## Reading list
+
+        * Structure and Interpretation of Computer Programs (SICP), H. Abelson, G. J. Sussman, J. Sussman
+        * Functional programming in Scala, R. Bjarnason, P. Chiusano
+
+      </script>
+    </section>
+
+    <section data-markdown>
+      <script type="text/template">
+        # The End
+
+      </script>
+    </section>
+</div>
+</div>
+
+<script src="lib/js/head.min.js"></script>
+<script src="js/reveal.js"></script>
+
+<script>
 			// More info https://github.com/hakimel/reveal.js#configuration
 			Reveal.initialize({
 				history: true,
@@ -45,6 +745,10 @@
 					{ src: 'plugin/highlight/highlight.js', async: true, callback: function() { hljs.initHighlightingOnLoad(); } }
 				]
 			});
-		</script>
-	</body>
+
+
+
+
+</script>
+</body>
 </html>
