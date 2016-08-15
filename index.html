@@ -79,24 +79,24 @@
 
           ```java
           class Bird implements Flying {
-          public void takeOff() {
-          System.out.println("I fly!");
-          }
+            public void takeOff() {
+              System.out.println("I fly!");
+            }
           }
           ```
 
           ```java
           if (a == 1)
-          b = 2;
+            b = 2;
           else
-          b = 3;
+            b = 3;
           ```
 
           ```
           try {
-          int a = 1 / 0;
+            int a = 1 / 0;
           } catch (Exception e) {
-          log.info("Everything is fine");
+            log.info("Everything is fine");
           }
           ```
         </script>
@@ -108,7 +108,7 @@
           Some expressions have side effects:
 
           ```clj
-          ;; Create a definition that can be used later`
+          ;; Create a definition that can be used later
           (def pi 3.14159265358)
           ;; The world is not the same, now it knows `pi`
 
@@ -239,28 +239,19 @@
           Parentheses:
 
           <pre><code data-trim data-noescape>
-            <mark>(</mark>
-            check-user-access db "kwilcke" "/employees" "application.write"
-            <mark>)</mark>
+          <mark>(</mark>check-user-access db "kwilcke" "/employees" "application.write"<mark>)</mark>
           </code></pre>
 
           Function name:
 
           <pre><code data-trim data-noescape>
-            (
-            <mark>check-user-access</mark>
-            db "kwilcke" "/employees" "application.write")
+          (<mark>check-user-access</mark> db "kwilcke" "/employees" "application.write")
           </code></pre>
 
           Function args:
 
           <pre><code data-trim data-noescape>
-            (check-user-access
-            <mark>db</mark>
-            <mark>"kwilcke"</mark>
-            <mark>"/employees"</mark>
-            <mark>"application.write"</mark>
-            )
+          (check-user-access <mark>db</mark> <mark>"kwilcke"</mark> <mark>"/employees"</mark> <mark>"application.write"</mark>)
           </code></pre>
         </script>
       </section>
@@ -272,8 +263,8 @@
 
           ```clj
           (defn double-sum [a b]
-          (println "Arguments:" a b)
-          (* 2 (+ a b)))
+            (println "Arguments:" a b)
+            (* 2 (+ a b)))
           ```
         </script>
       </section>
@@ -297,8 +288,8 @@
           ```java
           int res = 0;
           while (n > 0) {
-          res = res * n;
-          n = n - 1;
+            res = res * n;
+            n = n - 1;
           }
           System.out.println(res);
           ```
@@ -334,9 +325,9 @@
 
           ```clj
           (defn factorial [n]
-          (if (<= n 1)
-          1
-          (*' n (factorial (- n 1)))))
+            (if (<= n 1)
+              1
+              (*' n (factorial (- n 1)))))
           ```
 
         </script>
@@ -350,9 +341,9 @@
 
           ```clj
           (defn factorial [n]
-          (if (<= n 1)
-          1
-          (*' n (factorial (- n 1)))))
+            (if (<= n 1)
+              1
+              (*' n (factorial (- n 1)))))
           ```
 
         </script>
@@ -402,12 +393,10 @@
           * We can cheat
 
           <pre><code data-trim data-noescape>
-            (defn factorial [n]
+          (defn factorial [n]
             (if (<= n 1)
-            1
-            (*'
-            <mark>n</mark>
-            (factorial (- n 1)))))
+              1
+              (*' <mark>n</mark> (factorial (- n 1)))))
           </code></pre>
 
           We only need those parameters if we do something with the result of the recursive call.
@@ -419,10 +408,10 @@
           * We can build the result gradually in another argument
 
           <pre><code data-trim data-noescape>
-            (defn factorial-tail [n acc]
+          (defn factorial-tail [n acc]
             (if (<= n 1)
-            acc
-            (factorial-tail (- n 1) (*' n acc))))
+              acc
+              (factorial-tail (- n 1) (*' n acc))))
           </code></pre>
 
           <img data-src="images/StackTail.png"/>
@@ -436,12 +425,10 @@
           * We only need to give the compiler a hint:
 
           <pre><code data-trim data-noescape>
-            (defn factorial-tail [n acc]
+          (defn factorial-tail [n acc]
             (if (<= n 1)
-            acc
-            (
-            <mark>recur</mark>
-            (- n 1) (*' n acc))))
+              acc
+              (<mark>recur</mark> (- n 1) (*' n acc))))
           </code></pre>
 
           * `recur` in place of the function name will make the compiler use the same stack frame for recursive function calls.
@@ -456,19 +443,19 @@
           This is Tail Recursion:
 
           <pre><code data-trim data-noescape>
-            (defn factorial-1 [n acc]
+          (defn factorial-1 [n acc]
             (if (<= n 1)
-            acc
-            (factorial-1 (- n 1) (*' n acc))))
+              acc
+              (factorial-1 (- n 1) (*' n acc))))
           </code></pre>
 
           Is this Tail Recursion?
 
           <pre><code data-trim data-noescape>
-            (defn factorial-2 [n acc]
+          (defn factorial-2 [n acc]
             (if (> n 1)
-            (factorial-2 (- n 1) (*' n acc))
-            acc))
+              (factorial-2 (- n 1) (*' n acc))
+              acc))
           </code></pre>
 
         </script>
@@ -589,25 +576,25 @@
 
           ```clj
           (defn sum-list [lst]
-          (if (empty? lst)
-          0
-          (+ (first lst) (sum-list (next lst)))))
+            (if (empty? lst)
+              0
+              (+ (first lst) (sum-list (next lst)))))
           ```
 
           * Exercise: implement this in a tail-recursive way, similar to `factorial`
 
           <pre><code>
-            (defn factorial-tail [n acc]
+          (defn factorial-tail [n acc]
             (if (<= n 1)
-            acc
-            (recur (- n 1) (*' n acc))))
+              acc
+              (recur (- n 1) (*' n acc))))
           </code></pre>
 
           <pre><code data-trim data-noescape class="fragment">
-            (defn sum-list-tailrec [lst acc]
+          (defn sum-list-tailrec [lst acc]
             (if (empty? lst)
-            acc
-            (recur (next lst) (+ acc (first lst)))))
+              acc
+              (recur (next lst) (+ acc (first lst)))))
           </code></pre>
 
         </script>
@@ -618,20 +605,18 @@
 
           ```clj
           (defn multiply-list-tailrec [lst acc]
-          (if (empty? lst)
-          acc
-          (recur (next lst) (* acc (first lst)))))
+            (if (empty? lst)
+              acc
+              (recur (next lst) (* acc (first lst)))))
           ```
 
           * Differs from adding in just one symbol:
 
           <pre><code data-trim data-noescape>
-            (defn sum-list-tailrec [lst acc]
+          (defn sum-list-tailrec [lst acc]
             (if (empty? lst)
-            acc
-            (recur (next lst) (
-            <mark>+</mark>
-            acc (first lst)))))
+              acc
+              (recur (next lst) (<mark>+</mark> acc (first lst)))))
           </code></pre>
 
         </script>
@@ -650,15 +635,9 @@
         ```
 
         <pre><code data-trim data-noescape>
-          (reduce
-          <mark>+</mark>
-          10 '(1 2 3 4)) ; => 20
-          (map
-          <mark>inc</mark>
-          '(1 2 3 4)) ; => (2 3 4 5)
-          (filter?
-          <mark>odd?</mark>
-          '(1 2 3 4)) ; => (1 3)
+        (reduce <mark>+</mark> 10 '(1 2 3 4))  ; => 20
+        (map <mark>inc</mark> '(1 2 3 4))      ; => (2 3 4 5)
+        (filter? <mark>odd?</mark> '(1 2 3 4)) ; => (1 3)
         </code></pre>
 
       </script>
