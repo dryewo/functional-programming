@@ -75,7 +75,7 @@
       </section>
       <section data-markdown>
         <script type="text/template">
-          #### Not everything is an expression
+          ### Not everything is an expression
 
           ```java
           class Bird implements Flying {
@@ -125,13 +125,13 @@
 
           ```clj
           (ns clojure-hello.core
-          (:gen-class))
+            (:gen-class))
 
           (defn say-hello [who]
-          (println (str "Hello, " who "!")))
+            (println (str "Hello, " who "!")))
 
           (defn -main [& args]
-          (say-hello "World"))
+            (say-hello "World"))
           ```
         </script>
       </section>
@@ -319,9 +319,8 @@
         <script type="text/template">
           ### Factorial
 
-          `n! = n * (n-1) * (n-2) * ... * 1`
-
-          `n! = n * (n-1)!`
+          * `n! = n * (n-1) * (n-2) * ... * 1`
+          * `n! = n * (n-1)!`
 
           ```clj
           (defn factorial [n]
