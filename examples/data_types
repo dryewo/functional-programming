@@ -1,0 +1,5 @@
+Numbers	42, 2.718
+Strings	"Hello"
+Booleans	True, False
+Tuple    (1 2 3)
+List     [1, 2, 3]

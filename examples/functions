@@ -1,0 +1,3 @@
+checkUserAccess db "kwilcke" "/employees" "application.write"
+
+doubleSum a b = (a + b) * 2
