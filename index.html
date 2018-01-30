@@ -301,9 +301,9 @@
           * `n! = n * (n-1)!`
 
           ```haskell
-            factorial n =
-                if n <= 1 then 1
-                else n * factorial (n - 1)
+          factorial n =
+              if n <= 1 then 1
+              else n * factorial (n - 1)
           ```
 
         </script>
@@ -316,9 +316,9 @@
           * If not, call yourself again with modified parameters
 
           ```haskell
-            factorial n =
-                if n <= 1 then 1
-                else n * factorial (n - 1)
+          factorial n =
+              if n <= 1 then 1
+              else n * factorial (n - 1)
           ```
 
         </script>
@@ -368,9 +368,9 @@
           * We can cheat
 
           <pre><code data-trim data-noescape>
-            factorial n =
-                if n <= 1 then 1
-                else <mark>n</mark> * factorial (n - 1)
+          factorial n =
+              if n <= 1 then 1
+              else <mark>n</mark> * factorial (n - 1)
           </code></pre>
 
           We only need those parameters if we do something with the result of the recursive call.
@@ -382,7 +382,7 @@
           * We can build the result gradually in another argument
 
           <pre><code data-trim data-noescape>
-            factorialTail n acc =
+          factorialTail n acc =
               if n <= 1 then acc
               else factorialTail (n - 1) (n * acc)
           </code></pre>
@@ -527,7 +527,7 @@
           * Here is non-tail-recursive version:
 
           ```haskell
-            sumList lst =
+          sumList lst =
               if null lst then 0
               else head(lst) + sumList(tail lst)
           ```
@@ -535,13 +535,13 @@
           * Exercise: implement this in a tail-recursive way, similar to `factorial`
 
           <pre><code>
-            factorialTail 1 acc = acc
-            factorialTail n acc = factorialTail (n - 1) (n * acc)
+          factorialTail 1 acc = acc
+          factorialTail n acc = factorialTail (n - 1) (n * acc)
           </code></pre>
 
           <pre><code data-trim data-noescape class="fragment">
-            sumListTailrec [] acc = acc
-            sumListTailrec (x:xs) acc = sumListTailrec xs (acc + x)
+          sumListTailrec [] acc = acc
+          sumListTailrec (x:xs) acc = sumListTailrec xs (acc + x)
           </code></pre>
 
         </script>
@@ -558,8 +558,8 @@
           * Differs from adding in just one symbol:
 
           <pre><code data-trim data-noescape>
-            sumListTailrec [] acc = acc
-            sumListTailrec (x:xs) acc = sumListTailrec xs (acc <mark>+</mark> x)
+          sumListTailrec [] acc = acc
+          sumListTailrec (x:xs) acc = sumListTailrec xs (acc <mark>+</mark> x)
           </code></pre>
 
         </script>
