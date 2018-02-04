@@ -47,7 +47,7 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Introduction to Clojure syntax
+        ## Introduction to Haskell syntax
       </script>
     </section>
     <section>
@@ -65,10 +65,10 @@
           ### Expressions
 
           ```haskell
-          1 + 2 + 3       -- => 6
-          putStrLn "Hello" -- => IO ()
-          10 >= 5         -- => true
-          if 10 >= 5 then "Yes" else "No") -- => "Yes"
+          1 + 2 + 3                        -- => 6
+          putStrLn "Hello"                 -- => IO ()
+          10 >= 5                          -- => true
+          if 10 >= 5 then "Yes" else "No"  -- => "Yes"
           ```
           ```haskell
           simpleHTTP (getRequest "http://hackage.haskell.org/")
@@ -105,28 +105,13 @@
       </section>
       <section data-markdown>
         <script type="text/template">
-          ### Side effects
-
-          Some expressions have side effects:
-
-          ```haskell
-          -- Create a definition that can be used later
-          pi = 3.14159265358
-          -- The world is not the same, now it knows `pi`
-
-          -- Use the definition
-          pi * 2 * 100
-          ```
-        </script>
-      </section>
-      <section data-markdown>
-        <script type="text/template">
           ### Source code files
 
-          When the source code file is loaded, expressions from it are evaluated top to bottom, one by one.
+          An expression will only be evaluated when it is needed, and will not be evaluated if it is not needed.
 
           ```haskell
-          sayHello who = putStrLn ("Hello " ++ who ++ "!")
+          unrelatedFunc x = x + 1                           -- not evaluated
+          sayHello who = putStrLn ("Hello " ++ who ++ "!")  -- evaluated after main
           main = sayHello "World"
           ```
         </script>
@@ -194,7 +179,7 @@
               <td>O(N) access by element number</td>
             </tr>
             <tr>
-              <td>List</td>
+              <td>Lists</td>
               <td>`[1 2 3]`</td>
               <td>O(1) access by element number</td>
             </tr>
@@ -485,8 +470,6 @@
           -- Or just
           [1, 2, 3]
           ```
-
-          **'** before the list prevents Clojure from calling `42` as a function, which would make no sense.
         </script>
       </section>
       <section data-markdown>
@@ -500,11 +483,11 @@
           -- getting a Tail
           tail [1, 2, 3] -- => [2, 3]
 
-          tail [1] -- => ?
+          tail [1]       -- => ?
 
           -- Checking if a list is empty
-          null [] -- => True
-          null [1, 2] -- => False
+          null []        -- => True
+          null [1, 2]    -- => False
           ```
 
         </script>
@@ -574,7 +557,7 @@
         ```haskell
         (+) 1 2  -- => 3
         (+ 1) 10 -- => 11
-        odd 5 -- => True
+        odd 5    -- => True
         ```
 
         <pre><code data-trim data-noescape>
