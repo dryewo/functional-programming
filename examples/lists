@@ -1,0 +1,20 @@
+1 : 2 : [3]
+
+[1, 2, 3]
+
+
+head [1, 2, 3] => 1
+tail [1, 2, 3] => [2, 3]
+
+null [] => True
+null [1, 2] => False
+
+sumList lst =
+  if null lst then 0
+  else head(lst) + sumList(tail lst)
+
+sumListTailrec [] acc = acc
+sumListTailrec (x:xs) acc = sumListTailrec xs (acc + x)
+
+multiplyListTailrec [] acc = acc
+multiplyListTailrec (x:xs) acc = multiplyListTailrec xs (acc * x)

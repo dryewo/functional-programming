@@ -32,14 +32,14 @@
       <script type="text/template">
         ## Agenda
 
-        * Clojure syntax
+        * Haskell syntax
         * Functional recursion
         * Structural recursion
         * List processing
         * Higher-order functions
 
         Editor:
-        https://codepad.remoteinterview.io
+        https://repl.it/languages/haskell
 
         These slides:
         https://dryewo.github.io/functional-programming
@@ -47,7 +47,7 @@
     </section>
     <section data-markdown>
       <script type="text/template">
-        ## Introduction to Clojure syntax
+        ## Introduction to Haskell syntax
       </script>
     </section>
     <section>
@@ -64,15 +64,14 @@
         <script type="text/template">
           ### Expressions
 
-          ```clj
-          (+ 1 2 3)         ; 1 + 2 + 3       ; => 6
-          (println "Hello") ; println("Hello) ; => nil
-          (>= 10 5)         ; 10 >= 5         ; => true
-          (if (>= 10 5) "Yes" "No") ; => "Yes"
+          ```haskell
+          1 + 2 + 3                        -- => 6
+          putStrLn "Hello"                 -- => IO ()
+          10 >= 5                          -- => true
+          if 10 >= 5 then "Yes" else "No"  -- => "Yes"
           ```
-          ``` clj
-          (http/get "http://localhost:8080")
-          (cf/create-stack :stack-name "skynet-1")
+          ```haskell
+          simpleHTTP (getRequest "http://hackage.haskell.org/")
           ```
         </script>
       </section>
@@ -106,35 +105,14 @@
       </section>
       <section data-markdown>
         <script type="text/template">
-          ### Side effects
-
-          Some expressions have side effects:
-
-          ```clj
-          ;; Create a definition that can be used later
-          (def pi 3.14159265358)
-          ;; The world is not the same, now it knows `pi`
-
-          ;; Use the definition
-          (* 2 pi 100)
-          ```
-        </script>
-      </section>
-      <section data-markdown>
-        <script type="text/template">
           ### Source code files
 
-          When the source code file is loaded, expressions from it are evaluated top to bottom, one by one.
+          An expression will only be evaluated when it is needed, and will not be evaluated if it is not needed.
 
-          ```clj
-          (ns clojure-hello.core
-            (:gen-class))
-
-          (defn say-hello [who]
-            (println (str "Hello, " who "!")))
-
-          (defn -main [& args]
-            (say-hello "World"))
+          ```haskell
+          unrelatedFunc x = x + 1                           -- not evaluated
+          sayHello who = putStrLn ("Hello " ++ who ++ "!")  -- evaluated after main
+          main = sayHello "World"
           ```
         </script>
       </section>
@@ -196,24 +174,14 @@
             </thead>
             <tbody>
             <tr>
-              <td>Lists</td>
+              <td>Tuples</td>
               <td>`(1 2 3)`</td>
               <td>O(N) access by element number</td>
             </tr>
             <tr>
-              <td>Vectors</td>
+              <td>Lists</td>
               <td>`[1 2 3]`</td>
               <td>O(1) access by element number</td>
-            </tr>
-            <tr>
-              <td>Maps</td>
-              <td>`{:foo "42" :bar 11}`</td>
-              <td>Key-value dictionary</td>
-            </tr>
-            <tr>
-              <td>Sets</td>
-              <td>`#{:spades :hearts :clubs :diamonds}`</td>
-              <td>Membership</td>
             </tr>
             </tbody>
           </table>
@@ -235,26 +203,20 @@
         <script type="text/template">
           ### Function call
 
-          ```clj
-          (check-user-access db "kwilcke" "/employees" "application.write")
+          ```haskell
+          checkUserAccess db "kwilcke" "/employees" "application.write"
           ```
-
-          Parentheses:
-
-          <pre><code data-trim data-noescape>
-          <mark>(</mark>check-user-access db "kwilcke" "/employees" "application.write"<mark>)</mark>
-          </code></pre>
 
           Function name:
 
           <pre><code data-trim data-noescape>
-          (<mark>check-user-access</mark> db "kwilcke" "/employees" "application.write")
+          <mark>checkUserAccess</mark> db "kwilcke" "/employees" "application.write"
           </code></pre>
 
           Function args:
 
           <pre><code data-trim data-noescape>
-          (check-user-access <mark>db</mark> <mark>"kwilcke"</mark> <mark>"/employees"</mark> <mark>"application.write"</mark>)
+          checkUserAccess <mark>db</mark> <mark>"kwilcke"</mark> <mark>"/employees"</mark> <mark>"application.write"</mark>
           </code></pre>
         </script>
       </section>
@@ -262,12 +224,10 @@
         <script type="text/template">
           ### Function definition
 
-          Function with name 'double-sum' and arguments 'a' and 'b':
+          Function with name 'doubleSum' and arguments 'a' and 'b':
 
-          ```clj
-          (defn double-sum [a b]
-            (println "Arguments:" a b)
-            (* 2 (+ a b)))
+          ```haskell
+          doubleSum a b = (a + b) * 2
           ```
         </script>
       </section>
@@ -325,11 +285,10 @@
           * `n! = n * (n-1) * (n-2) * ... * 1`
           * `n! = n * (n-1)!`
 
-          ```clj
-          (defn factorial [n]
-            (if (<= n 1)
-              1
-              (*' n (factorial (- n 1)))))
+          ```haskell
+          factorial n =
+              if n <= 1 then 1
+              else n * factorial (n - 1)
           ```
 
         </script>
@@ -341,11 +300,10 @@
           * Check if it's time to stop
           * If not, call yourself again with modified parameters
 
-          ```clj
-          (defn factorial [n]
-            (if (<= n 1)
-              1
-              (*' n (factorial (- n 1)))))
+          ```haskell
+          factorial n =
+              if n <= 1 then 1
+              else n * factorial (n - 1)
           ```
 
         </script>
@@ -358,8 +316,8 @@
 
           Try this out:
 
-          ```clj
-          (factorial 10000)
+          ```haskell
+          factorial 1000000000000
           ```
 
           What's the answer?
@@ -395,10 +353,9 @@
           * We can cheat
 
           <pre><code data-trim data-noescape>
-          (defn factorial [n]
-            (if (<= n 1)
-              1
-              (*' <mark>n</mark> (factorial (- n 1)))))
+          factorial n =
+              if n <= 1 then 1
+              else <mark>n</mark> * factorial (n - 1)
           </code></pre>
 
           We only need those parameters if we do something with the result of the recursive call.
@@ -410,32 +367,16 @@
           * We can build the result gradually in another argument
 
           <pre><code data-trim data-noescape>
-          (defn factorial-tail [n acc]
-            (if (<= n 1)
-              acc
-              (factorial-tail (- n 1) (*' n acc))))
+          factorialTail n acc =
+              if n <= 1 then acc
+              else factorialTail (n - 1) (n * acc)
           </code></pre>
 
           <img data-src="images/StackTail.png"/>
 
           * This is Tail Recursion, when the recursive call is the last instruction in the function body.
-
-        </script>
-      </section>
-      <section data-markdown>
-        <script type="text/template">
-          * We only need to give the compiler a hint:
-
-          <pre><code data-trim data-noescape>
-          (defn factorial-tail [n acc]
-            (if (<= n 1)
-              acc
-              (<mark>recur</mark> (- n 1) (*' n acc))))
-          </code></pre>
-
-          * `recur` in place of the function name will make the compiler use the same stack frame for recursive function calls.
-          * This is Tail Call Optimization
-
+          * Haskell automatically optimises such kind of recursions
+          * https://www.willamette.edu/~fruehr/haskell/evolution.html
         </script>
       </section>
       <section data-markdown>
@@ -445,19 +386,17 @@
           This is Tail Recursion:
 
           <pre><code data-trim data-noescape>
-          (defn factorial-1 [n acc]
-            (if (<= n 1)
-              acc
-              (factorial-1 (- n 1) (*' n acc))))
+          factorialA n acc =
+            if n <= 1 then acc
+            else factorialA (n - 1) (n * acc)
           </code></pre>
 
           Is this Tail Recursion?
 
           <pre><code data-trim data-noescape>
-          (defn factorial-2 [n acc]
-            (if (> n 1)
-              (factorial-2 (- n 1) (*' n acc))
-              acc))
+          factorialB n acc =
+            if n > 1 then factorialB (n - 1) (n * acc)
+            else acc
           </code></pre>
 
         </script>
@@ -524,37 +463,31 @@
         <script type="text/template">
           ### Creating lists
 
-          ```clj
-          ;; cons is used to create a list:
-          (cons 42 (cons "Hello" (cons "World" nil)))
+          ```haskell
+          -- (:) is used to create a list:
+          1 : 2 : [3]
 
-          ;; Or just
-          (list 42 "Hello" "World")
-
-          ;; Or even shorter
-          '(42 "Hello" "World")
+          -- Or just
+          [1, 2, 3]
           ```
-
-          **'** before the list prevents Clojure from calling `42` as a function, which would make no sense.
         </script>
       </section>
       <section data-markdown>
         <script type="text/template">
           ### Operations on lists
 
-          ```clj
-          ;; getting a Head
-          (first '(42 "Hello" "World")) ; => 42
+          ```haskell
+          -- getting a Head
+          head [1, 2, 3] -- => 1
 
-          ;; getting a Tail
-          (next '(42 "Hello" "World")) ; => '("Hello" "World")
+          -- getting a Tail
+          tail [1, 2, 3] -- => [2, 3]
 
-          (next '("World")) ; => ?
+          tail [1]       -- => ?
 
-          ;; Checking if a list is empty
-          (empty? nil) ; => true
-          (empty? '()) ; => true
-          (empty? '(42)) ; => false
+          -- Checking if a list is empty
+          null []        -- => True
+          null [1, 2]    -- => False
           ```
 
         </script>
@@ -576,27 +509,22 @@
 
           * Here is non-tail-recursive version:
 
-          ```clj
-          (defn sum-list [lst]
-            (if (empty? lst)
-              0
-              (+ (first lst) (sum-list (next lst)))))
+          ```haskell
+          sumList lst =
+              if null lst then 0
+              else head(lst) + sumList(tail lst)
           ```
 
           * Exercise: implement this in a tail-recursive way, similar to `factorial`
 
           <pre><code>
-          (defn factorial-tail [n acc]
-            (if (<= n 1)
-              acc
-              (recur (- n 1) (*' n acc))))
+          factorialTail 1 acc = acc
+          factorialTail n acc = factorialTail (n - 1) (n * acc)
           </code></pre>
 
           <pre><code data-trim data-noescape class="fragment">
-          (defn sum-list-tailrec [lst acc]
-            (if (empty? lst)
-              acc
-              (recur (next lst) (+ acc (first lst)))))
+          sumListTailrec [] acc = acc
+          sumListTailrec (x:xs) acc = sumListTailrec xs (acc + x)
           </code></pre>
 
         </script>
@@ -605,20 +533,16 @@
         <script type="text/template">
           ### Multiplying a list
 
-          ```clj
-          (defn multiply-list-tailrec [lst acc]
-            (if (empty? lst)
-              acc
-              (recur (next lst) (* acc (first lst)))))
+          ```haskell
+          multiplyListTailrec [] acc = acc
+          multiplyListTailrec (x:xs) acc = multiplyListTailrec xs (acc * x)
           ```
 
           * Differs from adding in just one symbol:
 
           <pre><code data-trim data-noescape>
-          (defn sum-list-tailrec [lst acc]
-            (if (empty? lst)
-              acc
-              (recur (next lst) (<mark>+</mark> acc (first lst)))))
+          sumListTailrec [] acc = acc
+          sumListTailrec (x:xs) acc = sumListTailrec xs (acc <mark>+</mark> x)
           </code></pre>
 
         </script>
@@ -630,16 +554,16 @@
 
         * Functions that take other functions as arguments
 
-        ```clj
-        (+ 1 2)  ; => 3
-        (inc 10) ; => 11
-        (odd? 5) ; => true
+        ```haskell
+        (+) 1 2  -- => 3
+        (+ 1) 10 -- => 11
+        odd 5    -- => True
         ```
 
         <pre><code data-trim data-noescape>
-        (reduce <mark>+</mark> 10 '(1 2 3 4))  ; => 20
-        (map <mark>inc</mark> '(1 2 3 4))      ; => (2 3 4 5)
-        (filter <mark>odd?</mark> '(1 2 3 4)) ; => (1 3)
+        foldr <mark>(+)</mark> 10 [1, 2, 3, 4]  -- => 20
+        map <mark>(+ 1)</mark> [1, 2, 3, 4]     -- => (2 3 4 5)
+        filter <mark>odd</mark> [1, 2, 3, 4]    -- => (1 3)
         </code></pre>
 
       </script>
@@ -660,11 +584,10 @@
         <script type="text/template">
           * Reducing is done with `reduce` function.
 
-          ```clj
-          ;; Args: operation, initial accumulator value, a list
-          (reduce + 0 '(1 2 3 4))
-          (reduce * 1 '(1 2 3 4))
-          (reduce (fn [acc x] (println acc x)) 1 '(1 2 3 4))
+          ```haskell
+          -- Args: operation, initial accumulator value, a list
+          foldr (+) 0 [1, 2, 3, 4]
+          foldr (*) 1 [1, 2, 3, 4]
           ```
         </script>
       </section>
@@ -683,11 +606,11 @@
         <script type="text/template">
           * Mapping is done with `map` function
 
-          ```clj
-          ;; `inc` adds 1 to the argument
-          (map inc '(1 2 3 4)) ; => (2 3 4 5)
-          ;; The result is the same as
-          (list (inc 1) (inc 2) (inc 3) (inc 4))
+          ```haskell
+          -- `+1` adds 1 to the argument
+          map (+ 1) [1, 2, 3, 4] -- => [2, 3, 4, 5]
+          -- The result is the same as
+          [(+1) 1, (+ 1) 2, (+ 1) 3, (+ 1) 4]
           ```
         </script>
       </section>
